@@ -48,7 +48,11 @@ impl<T> List<T> {
     }
 }
 
-
+impl <T> List<T> {
+    pub fn iter(self) -> Iter<T> {
+        Iter { next: self.head.map(|node| &node) }
+    }
+}
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
         let mut cur_link = self.head.take();
@@ -67,6 +71,20 @@ impl<T> Iterator for IntoIter<T> {
     }
 }
 
+
+pub struct Iter<'a, T> {
+    next: Option<&'a Node<T>>,
+}
+
+impl<'a, T> Iterator for Iter<T> {
+    type Item = &'a T;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next.map(|node| {
+            self.next = node.next.map(|node| &node);
+            &node.elem
+        })
+    }
+}
 #[cfg(test)]
 mod test {
     use super::List;
