@@ -50,6 +50,10 @@ impl<T> List<T> {
     pub fn iter(&self) -> Iter<T> {
         Iter { next: self.head.as_deref() }
     }
+
+    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
+        IterMut { next: self.head.as_deref_mut() }
+    }
 }
 
 impl<T> Drop for List<T> {
@@ -89,12 +93,6 @@ pub struct IterMut<'a, T> {
     next: Option<&'a mut Node<T>>,
 }
 
-impl<T> List<T> {
-    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
-        IterMut { next: self.head.as_deref_mut() }
-    }
-}
-
 impl<'a, T> Iterator for IterMut<'a, T> {
     type Item = &'a mut T;
     fn next(&mut self) -> Option<Self::Item> {
@@ -104,6 +102,7 @@ impl<'a, T> Iterator for IterMut<'a, T> {
         })
     }
 }
+
 #[cfg(test)]
 mod test {
     use super::List;
