@@ -85,6 +85,25 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 
+pub struct IterMut<'a, T> {
+    next: Option<&'a mut Node<T>>,
+}
+
+impl<T> List<T> {
+    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
+        IterMut { next: self.head.as_deref_mut() }
+    }
+}
+
+impl<'a, T> Iterator for IterMut<'a, T> {
+    type Item = &'a mut T;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next.take().map(|node| {
+            self.next = node.next.as_deref_mut();
+            &mut node.elem
+        })
+    }
+}
 #[cfg(test)]
 mod test {
     use super::List;
