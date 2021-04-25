@@ -20,7 +20,7 @@ impl List {
     }
 
     pub fn push(&mut self, elem: i32) {
-        let new_node = Node { elem: elem, next: mem::replace(
+        let new_node = Node { elem, next: mem::replace(
             &mut self.head,
             Link::Empty
         )};
