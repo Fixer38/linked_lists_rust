@@ -18,7 +18,7 @@ impl<T> List<T> {
 
     pub fn push(&mut self, elem: T) {
         let new_node = Node {
-            elem: elem,
+            elem,
             next: self.head.take(),
         };
         self.head = Some(Box::from(new_node));
@@ -74,7 +74,6 @@ impl<T> Iterator for IntoIter<T> {
     }
 }
 
-
 pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
 }
@@ -106,6 +105,7 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 #[cfg(test)]
 mod test {
     use super::List;
+
     #[test]
     fn basics() {
         let mut list = List::new();
