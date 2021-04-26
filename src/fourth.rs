@@ -1,5 +1,5 @@
 use std::rc::Rc;
-use std::cell::{RefCell, Ref};
+use std::cell::{RefCell};
 
 pub struct List<T> {
     head: Link<T>,
@@ -56,7 +56,33 @@ impl<T> List<T> {
                     self.tail.take();
                 }
             }
+            // Ok converts Result to an Option to avoid having the Debug trait implemented
             Rc::try_unwrap(old_head).ok().unwrap().into_inner().elem
         })
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::List;
+
+    #[test]
+    fn basics() {
+        let mut list = List::new();
+
+        assert_eq!(list.pop_front(), None);
+        list.push_front(1);
+        list.push_front(2);
+        list.push_front(3);
+
+        assert_eq!(list.pop_front(), Some(3));
+        assert_eq!(list.pop_front(), Some(2));
+        assert_eq!(list.pop_front(), Some(1));
+        list.push_front(4);
+        list.push_front(5);
+
+        assert_eq!(list.pop_front(), Some(5));
+        assert_eq!(list.pop_front(), Some(4));
+        assert_eq!(list.pop_front(), None);
     }
 }
