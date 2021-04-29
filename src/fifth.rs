@@ -37,18 +37,18 @@ impl<'a, T> List<T> {
         self.tail = raw_tail;
     }
 
-    /*pub fn pop(&mut self) -> Option<T> {
+    pub fn pop(&mut self) -> Option<T> {
         self.head.take().map(|head| {
             let head = *head;
             self.head = head.next;
 
             // Check if there is no more head
             if self.head.is_none() {
-                self.tail = None;
+                self.tail = std::ptr::null_mut();
             }
             head.elem
         })
-    }*/
+    }
 }
 
 mod test {
